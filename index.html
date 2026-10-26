@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Пропись — почерк и нарисованные символы в шрифт OTF/WOFF прямо в браузере">
+<meta name="description" content="Propis — handwriting and drawn symbols to an OTF/WOFF font, right in the browser">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
@@ -221,6 +221,8 @@ input.num::-webkit-inner-spin-button{opacity:.6}
 @media (max-width:900px){.toolbar{gap:4px}.topts{gap:6px 12px}}
 .trow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .sheetarea{width:100%;container-type:inline-size}
+.lang button{padding:5px 8px;font-size:12px;border:none;background:none;border-radius:8px;color:var(--muted)}
+.lang button.on{background:var(--sheet);color:var(--ink);box-shadow:0 1px 2px rgba(70,55,25,.16)}
 </style>
 
 <div class="wrap">
@@ -234,6 +236,7 @@ input.num::-webkit-inner-spin-button{opacity:.6}
   </nav>
   <div class="namebox">
     <span class="count" id="countTop"></span>
+    <span class="seg lang" role="group" aria-label="Язык интерфейса"><button data-lang="ru">RU</button><button data-lang="cs">CS</button><button data-lang="en">EN</button></span>
     <input id="fname" type="text" value="Мой почерк" aria-label="Название шрифта" title="Название шрифта">
     <button id="openBtn" title="Открыть архив .zip, проект .json или шрифт .otf / .ttf / .woff"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h6l2 2h10v10H3z"/></svg>Открыть</button>
     <input id="openAny" type="file" accept=".zip,.json,.otf,.ttf,.woff,application/zip,application/json,font/*" hidden>
@@ -286,7 +289,7 @@ input.num::-webkit-inner-spin-button{opacity:.6}
     <aside class="side">
       <div class="list">
         <div class="banner" id="exBanner" hidden>
-          <p>Пока загружен <b>пример</b> (буквы с пустым кружком). Рисуйте в любой клетке, и пример заменится вашей буквой.</p>
+          <p data-i18n-html="banner">Пока загружен <b>пример</b> (буквы с пустым кружком). Рисуйте в любой клетке, и пример заменится вашей буквой.</p>
           <button id="clearEx">Убрать примеры</button>
         </div>
         <div id="list"></div>
@@ -298,7 +301,7 @@ input.num::-webkit-inner-spin-button{opacity:.6}
           <label for="adjW"><span class="lt">Ширина знака <output id="oW">0</output></span><input id="adjW" type="range" min="-300" max="300" step="5" value="0"></label>
         </div>
         <div class="proof" id="proof">HAHnAno</div>
-        <p class="hint"><kbd>L</kbd> линер · <kbd>P</kbd> перо · <kbd>B</kbd> кисть · <kbd>C</kbd> широкое перо · <kbd>M</kbd> сухая кисть · <kbd>U</kbd> прямая · <kbd>E</kbd> ластик · <kbd>[</kbd> <kbd>]</kbd> размер · <kbd>Ctrl Z</kbd> отменить · <kbd>←</kbd> <kbd>→</kbd> соседний знак. Маска в шрифт не попадает.</p>
+        <p class="hint" data-i18n-html="hint"><kbd>L</kbd> линер · <kbd>P</kbd> перо · <kbd>B</kbd> кисть · <kbd>C</kbd> широкое перо · <kbd>M</kbd> сухая кисть · <kbd>U</kbd> прямая · <kbd>E</kbd> ластик · <kbd>[</kbd> <kbd>]</kbd> размер · <kbd>Ctrl Z</kbd> отменить · <kbd>←</kbd> <kbd>→</kbd> соседний знак. Маска в шрифт не попадает.</p>
       </div>
     </aside>
   </div>
@@ -369,6 +372,20 @@ input.num::-webkit-inner-spin-button{opacity:.6}
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
+const I18N={"Линер (L)": {"cs": "Liner (L)", "en": "Liner (L)"}, "Перо (нажим) (P)": {"cs": "Pero (přítlak) (P)", "en": "Pen (pressure) (P)"}, "Кисть (B)": {"cs": "Štětec (B)", "en": "Brush (B)"}, "Широкое перо (C)": {"cs": "Široké pero (C)", "en": "Broad nib (C)"}, "Сухая кисть (M)": {"cs": "Suchý štětec (M)", "en": "Dry brush (M)"}, "Прямая (Shift — шаг 15°) (U)": {"cs": "Přímka (Shift — krok 15°) (U)", "en": "Line (Shift — 15° steps) (U)"}, "Ластик (E)": {"cs": "Guma (E)", "en": "Eraser (E)"},"Рисовать": {"cs": "Kreslit", "en": "Draw"}, "Шаблон и скан": {"cs": "Šablona a sken", "en": "Template & scan"}, "Превью": {"cs": "Náhled", "en": "Preview"}, "Мой почерк": {"cs": "Můj rukopis", "en": "My handwriting"}, "Название шрифта": {"cs": "Název písma", "en": "Font name"}, "Открыть": {"cs": "Otevřít", "en": "Open"}, "Открыть архив .zip, проект .json или шрифт .otf / .ttf / .woff": {"cs": "Otevřít archiv .zip, projekt .json nebo písmo .otf / .ttf / .woff", "en": "Open a .zip archive, a .json project or an .otf / .ttf / .woff font"}, "Сохранить шрифт": {"cs": "Uložit písmo", "en": "Save font"}, "Архив: шрифт OTF + WOFF и проект для продолжения работы": {"cs": "Archiv: písmo OTF + WOFF a projekt pro další práci", "en": "Archive: OTF + WOFF font and the project to keep working"}, "Язык интерфейса": {"cs": "Jazyk rozhraní", "en": "Interface language"}, "не нарисован": {"cs": "nenakresleno", "en": "not drawn"}, "пример": {"cs": "ukázka", "en": "sample"}, "нарисован": {"cs": "nakresleno", "en": "drawn"}, "Предыдущий знак": {"cs": "Předchozí znak", "en": "Previous glyph"}, "Следующий знак": {"cs": "Další znak", "en": "Next glyph"}, "Инструменты": {"cs": "Nástroje", "en": "Tools"}, "Линер": {"cs": "Liner", "en": "Liner"}, "Перо": {"cs": "Pero", "en": "Pen"}, "Перо (нажим)": {"cs": "Pero (přítlak)", "en": "Pen (pressure)"}, "Кисть": {"cs": "Štětec", "en": "Brush"}, "Широкое перо": {"cs": "Široké pero", "en": "Broad nib"}, "Сухая кисть": {"cs": "Suchý štětec", "en": "Dry brush"}, "Прямая": {"cs": "Přímka", "en": "Line"}, "Прямая (Shift — шаг 15°)": {"cs": "Přímka (Shift — krok 15°)", "en": "Line (Shift — 15° steps)"}, "Ластик": {"cs": "Guma", "en": "Eraser"}, "Отменить": {"cs": "Zpět", "en": "Undo"}, "Отменить (Ctrl+Z)": {"cs": "Zpět (Ctrl+Z)", "en": "Undo (Ctrl+Z)"}, "Очистить знак": {"cs": "Vymazat znak", "en": "Clear glyph"}, "Показать векторный контур": {"cs": "Zobrazit vektorový obrys", "en": "Show vector outline"}, "Контур": {"cs": "Obrys", "en": "Outline"}, "Маска": {"cs": "Maska", "en": "Mask"}, "Образец буквы под листом": {"cs": "Vzor písmene pod listem", "en": "Reference letter under the sheet"}, "Настройки маски": {"cs": "Nastavení masky", "en": "Mask settings"}, "Маска-образец": {"cs": "Maska-vzor", "en": "Reference mask"}, "Стиль маски": {"cs": "Styl masky", "en": "Mask style"}, "Прозрачность": {"cs": "Průhlednost", "en": "Opacity"}, "Цвет": {"cs": "Barva", "en": "Colour"}, "Свой цвет маски": {"cs": "Vlastní barva masky", "en": "Custom mask colour"}, "Цвет маски": {"cs": "Barva masky", "en": "Mask colour"}, "Масштаб": {"cs": "Měřítko", "en": "Scale"}, "Наклон": {"cs": "Sklon", "en": "Slant"}, "Сбросить масштаб и наклон": {"cs": "Obnovit měřítko a sklon", "en": "Reset scale and slant"}, "вкл": {"cs": "zap", "en": "on"}, "выкл": {"cs": "vyp", "en": "off"}, "Размер": {"cs": "Velikost", "en": "Size"}, "Угол": {"cs": "Úhel", "en": "Angle"}, "Сглаживание": {"cs": "Vyhlazení", "en": "Smoothing"}, "Убирает дрожание руки": {"cs": "Odstraňuje třes ruky", "en": "Removes hand jitter"}, "Убрать примеры": {"cs": "Odebrat ukázky", "en": "Remove samples"}, "Сдвиг ↔": {"cs": "Posun ↔", "en": "Shift ↔"}, "Вверх / вниз": {"cs": "Nahoru / dolů", "en": "Up / down"}, "Ширина знака": {"cs": "Šířka znaku", "en": "Glyph width"}, "заглавные": {"cs": "verzálky", "en": "caps"}, "строчные": {"cs": "minusky", "en": "x-height"}, "база": {"cs": "účaří", "en": "baseline"}, "выносные": {"cs": "dotahy", "en": "descender"}, "— число": {"cs": "— číslo", "en": "— number"}, "Гротеск": {"cs": "Grotesk", "en": "Grotesque"}, "Рубленый (узкий)": {"cs": "Bezpatkové úzké", "en": "Condensed sans"}, "Антиква старая": {"cs": "Renesanční antikva", "en": "Old-style serif"}, "Антиква контрастная": {"cs": "Kontrastní antikva", "en": "Didone serif"}, "Курсив": {"cs": "Kurzíva", "en": "Italic"}, "Рукописный": {"cs": "Ručně psané", "en": "Handwriting"}, "Каллиграфия": {"cs": "Kaligrafie", "en": "Calligraphy"}, "Моноширинный": {"cs": "Neproporcionální", "en": "Monospace"}, "Все": {"cs": "Vše", "en": "All"}, "Латиница · заглавные": {"cs": "Latinka · verzálky", "en": "Latin · uppercase"}, "Латиница · строчные": {"cs": "Latinka · minusky", "en": "Latin · lowercase"}, "Чешская диакритика": {"cs": "Česká diakritika", "en": "Czech diacritics"}, "Кириллица · заглавные": {"cs": "Cyrilice · verzálky", "en": "Cyrillic · uppercase"}, "Кириллица · строчные": {"cs": "Cyrilice · minusky", "en": "Cyrillic · lowercase"}, "Цифры": {"cs": "Číslice", "en": "Digits"}, "Пунктуация": {"cs": "Interpunkce", "en": "Punctuation"}, "Свои знаки": {"cs": "Vlastní znaky", "en": "Custom glyphs"}, "ваших знаков: {a} из {b}": {"cs": "vašich znaků: {a} z {b}", "en": "your glyphs: {a} of {b}"}, "1. Шаблон для печати": {"cs": "1. Šablona k tisku", "en": "1. Printable template"}, "Распечатайте листы на A4, впишите каждую букву в свою рамку тёмной ручкой или маркером. Чёрные квадраты по углам не закрывайте: по ним приложение выравнивает фото.": {"cs": "Vytiskněte listy na A4 a každé písmeno napište tmavým perem nebo fixem do jeho rámečku. Černé čtverce v rozích nezakrývejte: podle nich aplikace srovná fotku.", "en": "Print the sheets on A4 and write each letter inside its frame with a dark pen or marker. Keep the black corner squares visible: the app uses them to straighten the photo."}, "Лист": {"cs": "List", "en": "Sheet"}, "Скачать лист PNG": {"cs": "Stáhnout list PNG", "en": "Download sheet PNG"}, "Все листы (.zip)": {"cs": "Všechny listy (.zip)", "en": "All sheets (.zip)"}, "2. Фото или скан листа": {"cs": "2. Fotka nebo sken listu", "en": "2. Photo or scan of the sheet"}, "Снимайте сверху, при ровном свете, чтобы все четыре квадрата попали в кадр. Углы находятся автоматически; если сетка легла криво, перетащите красные точки на центры квадратов.": {"cs": "Foťte shora při rovnoměrném světle, aby byly v záběru všechny čtyři čtverce. Rohy se najdou automaticky; pokud mřížka sedí nakřivo, přetáhněte červené body na středy čtverců.", "en": "Shoot from above in even light with all four squares in frame. Corners are found automatically; if the grid is off, drag the red dots onto the centres of the squares."}, "Перетащите фото сюда или": {"cs": "Přetáhněte fotku sem nebo", "en": "Drop a photo here or"}, "выберите файл": {"cs": "vyberte soubor", "en": "choose a file"}, "Это лист": {"cs": "Toto je list", "en": "This is sheet"}, "заменять уже нарисованные": {"cs": "přepsat už nakreslené", "en": "replace glyphs already drawn"}, "Распознать буквы": {"cs": "Rozpoznat písmena", "en": "Recognise letters"}, "Настройки шрифта": {"cs": "Nastavení písma", "en": "Font settings"}, "Поля вокруг букв": {"cs": "Okraje kolem písmen", "en": "Side bearings"}, "Межбуквенный интервал": {"cs": "Prostrkání", "en": "Letter spacing"}, "Ширина пробела": {"cs": "Šířka mezery", "en": "Space width"}, "Толщина линий": {"cs": "Tloušťka tahů", "en": "Stroke weight"}, "Сглаживание контура": {"cs": "Vyhlazení obrysu", "en": "Outline smoothing"}, "Размер превью": {"cs": "Velikost náhledu", "en": "Preview size"}, "Текст для превью": {"cs": "Text náhledu", "en": "Preview text"}, "Сохранить шрифт (.zip)": {"cs": "Uložit písmo (.zip)", "en": "Save font (.zip)"}, "Сохранить проект (.json)": {"cs": "Uložit projekt (.json)", "en": "Save project (.json)"}, "Открыть проект": {"cs": "Otevřít projekt", "en": "Open project"}, "Все знаки": {"cs": "Všechny znaky", "en": "All glyphs"}, "например: ©€→♥": {"cs": "např.: ©€→♥", "en": "e.g. ©€→♥"}, "Добавить свои знаки": {"cs": "Přidat vlastní znaky", "en": "Add custom glyphs"}, "Браузер не дал сохранить черновик. Сохраните проект в файл .json на вкладке «Превью».": {"cs": "Prohlížeč nedovolil uložit koncept. Uložte projekt do souboru .json na kartě „Náhled“.", "en": "The browser blocked saving the draft. Save the project as a .json file on the Preview tab."}, "Не удалось собрать шрифт: ": {"cs": "Písmo se nepodařilo sestavit: ", "en": "Could not build the font: "}, "Сохранено: ": {"cs": "Uloženo: ", "en": "Saved: "}, "Не удалось сохранить файл": {"cs": "Soubor se nepodařilo uložit", "en": "Could not save the file"}, "Сохранение отменено": {"cs": "Ukládání zrušeno", "en": "Saving cancelled"}, "Не удалось сохранить: ": {"cs": "Nepodařilo se uložit: ", "en": "Could not save: "}, "Сохранение файлов недоступно в этом окне. Откройте страницу в claude.ai.": {"cs": "Ukládání souborů zde není dostupné.", "en": "Saving files is not available here."}, "В шрифте пока только примеры — нарисуйте свои буквы": {"cs": "V písmu jsou zatím jen ukázky — nakreslete vlastní písmena", "en": "The font only has samples so far — draw your own letters"}, "Проект открыт": {"cs": "Projekt otevřen", "en": "Project opened"}, "Из шрифта загружено знаков: ": {"cs": "Z písma načteno znaků: ", "en": "Glyphs loaded from the font: "}, "Архив открыт: проект восстановлен": {"cs": "Archiv otevřen: projekt obnoven", "en": "Archive opened: project restored"}, "Из шрифта в архиве загружено знаков: ": {"cs": "Z písma v archivu načteno znaků: ", "en": "Glyphs loaded from the font in the archive: "}, "В архиве нет ни проекта, ни шрифта": {"cs": "Archiv neobsahuje projekt ani písmo", "en": "The archive has no project and no font"}, "Не получилось открыть файл: ": {"cs": "Soubor se nepodařilo otevřít: ", "en": "Could not open the file: "}, "Это не файл проекта «Пропись»": {"cs": "Toto není soubor projektu Propis", "en": "This is not a Propis project file"}, "Эти знаки уже есть в списке": {"cs": "Tyto znaky už v seznamu jsou", "en": "These glyphs are already in the list"}, "Добавлено знаков: ": {"cs": "Přidáno znaků: ", "en": "Glyphs added: "}, "{i} из {n} ({a}…{b})": {"cs": "{i} z {n} ({a}…{b})", "en": "{i} of {n} ({a}…{b})"}, "«{name}» · лист {i} из {n}": {"cs": "„{name}“ · list {i} z {n}", "en": "“{name}” · sheet {i} of {n}"}, "Пишите знак внутри рамки тёмной ручкой. Голубые линии: заглавные, строчные (пунктир), базовая, выносные.": {"cs": "Pište znak dovnitř rámečku tmavým perem. Modré linky: verzálky, minusky (čárkovaně), účaří, dotahy.", "en": "Write each glyph inside its frame with a dark pen. Blue lines: caps, x-height (dashed), baseline, descender."}, "Не получилось открыть изображение": {"cs": "Obrázek se nepodařilo otevřít", "en": "Could not open the image"}, "Угловые метки найдены. Проверьте, что рамки легли на буквы.": {"cs": "Rohové značky nalezeny. Zkontrolujte, že rámečky sedí na písmena.", "en": "Corner marks found. Check that the frames sit on the letters."}, "Метки не найдены автоматически: перетащите четыре красные точки на центры чёрных квадратов.": {"cs": "Značky se nenašly automaticky: přetáhněte čtyři červené body na středy černých čtverců.", "en": "Marks were not found automatically: drag the four red dots onto the centres of the black squares."}, "Готово: добавлено {a}, пустых рамок {b}{c}. Проверьте буквы на вкладке «Рисовать» и при необходимости подправьте.": {"cs": "Hotovo: přidáno {a}, prázdných rámečků {b}{c}. Zkontrolujte písmena na kartě „Kreslit“ a případně je upravte.", "en": "Done: {a} added, {b} empty frames{c}. Check the letters on the Draw tab and touch them up if needed."}, ", пропущено уже нарисованных {k}": {"cs": ", přeskočeno už nakreslených {k}", "en": ", {k} already drawn skipped"}, "README": {"cs": "Písmo „{name}“, znaků: {n}.\n\n{base}.otf — nainstalujte do systému (dvojklik → Instalovat). Funguje ve Figmě, Illustratoru, Wordu ad.\n{base}.woff — pro weby:\n@font-face{font-family:\"{name}\";src:url({base}.woff) format(\"woff\")}\n\nproject.json — projekt Propisu: otevřete tento archiv tlačítkem „Otevřít“ a pokračujte v práci.\n\nVytvořeno v aplikaci Propis.", "en": "Font “{name}”, {n} glyphs.\n\n{base}.otf — install it on your system (double-click → Install). Works in Figma, Illustrator, Word and more.\n{base}.woff — for websites:\n@font-face{font-family:\"{name}\";src:url({base}.woff) format(\"woff\")}\n\nproject.json — the Propis project: open this archive with the “Open” button to keep working.\n\nMade with Propis."}, "PT": {"cs": "Příliš žluťoučký kůň úpěl ďábelské ódy.\nThe quick brown fox jumps over the lazy dog.\nСъешь же ещё этих мягких французских булок — 0123456789?!", "en": "The quick brown fox jumps over the lazy dog.\nPříliš žluťoučký kůň úpěl ďábelské ódy.\nСъешь же ещё этих мягких французских булок — 0123456789?!"}},I18H={"banner": {"ru": "Пока загружен <b>пример</b> (буквы с пустым кружком). Рисуйте в любой клетке, и пример заменится вашей буквой.", "cs": "Zatím je načtena <b>ukázka</b> (písmena s prázdným kroužkem). Kreslete do libovolné buňky a ukázka se nahradí vaším písmenem.", "en": "A <b>sample</b> is loaded for now (letters with an empty circle). Draw in any cell and the sample is replaced with your letter."}, "hint": {"ru": "<kbd>L</kbd> линер · <kbd>P</kbd> перо · <kbd>B</kbd> кисть · <kbd>C</kbd> широкое перо · <kbd>M</kbd> сухая кисть · <kbd>U</kbd> прямая · <kbd>E</kbd> ластик · <kbd>[</kbd> <kbd>]</kbd> размер · <kbd>Ctrl Z</kbd> отменить · <kbd>←</kbd> <kbd>→</kbd> соседний знак. Маска в шрифт не попадает.", "cs": "<kbd>L</kbd> liner · <kbd>P</kbd> pero · <kbd>B</kbd> štětec · <kbd>C</kbd> široké pero · <kbd>M</kbd> suchý štětec · <kbd>U</kbd> přímka · <kbd>E</kbd> guma · <kbd>[</kbd> <kbd>]</kbd> velikost · <kbd>Ctrl Z</kbd> zpět · <kbd>←</kbd> <kbd>→</kbd> sousední znak. Maska se do písma nedostane.", "en": "<kbd>L</kbd> liner · <kbd>P</kbd> pen · <kbd>B</kbd> brush · <kbd>C</kbd> broad nib · <kbd>M</kbd> dry brush · <kbd>U</kbd> line · <kbd>E</kbd> eraser · <kbd>[</kbd> <kbd>]</kbd> size · <kbd>Ctrl Z</kbd> undo · <kbd>←</kbd> <kbd>→</kbd> next glyph. The mask never goes into the font."}},RU_README="Шрифт «{name}», знаков: {n}.\n\n{base}.otf — установите в систему (двойной клик → Установить). Работает в Figma, Illustrator, Word и др.\n{base}.woff — для сайтов:\n@font-face{font-family:\"{name}\";src:url({base}.woff) format(\"woff\")}\n\nproject.json — проект «Прописи»: откройте этот же архив кнопкой «Открыть», чтобы продолжить работу.\n\nСделано в «Пропись».";
+let LANG='ru';
+try{LANG=localStorage.getItem('propis-lang')||''}catch(e){}
+if(!['ru','cs','en'].includes(LANG)){LANG='en';for(const l of (navigator.languages||[navigator.language||'en'])){const b=String(l).toLowerCase().slice(0,2);if(['cs','sk'].includes(b)){LANG='cs';break}if(['ru','uk','be'].includes(b)){LANG='ru';break}if(b==='en'){LANG='en';break}}}
+const L=(k,v)=>{let t=LANG==='ru'?k:(I18N[k]?.[LANG]??k);if(v)for(const n in v)t=t.split('{'+n+'}').join(v[n]);return t};
+function i18nStatic(){
+  document.documentElement.lang=LANG;
+  const w=document.createTreeWalker(document.querySelector('.wrap'),NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('script,style,[data-i18n-html],#list,#spec,#pview,#proof,#bigch,#cpLbl,#stLbl,#tName,#countTop,#mState,#scanStatus,output,option')?2:1});
+  let n;while(n=w.nextNode()){if(n._ru===undefined){const t=n.nodeValue.trim();if(!t||!I18N[t])continue;n._ru=t}n.nodeValue=n.nodeValue.replace(n._cur||n._ru,L(n._ru));n._cur=L(n._ru)}
+  document.querySelectorAll('[title],[aria-label],[placeholder]').forEach(el=>['title','aria-label','placeholder'].forEach(a=>{if(!el.hasAttribute(a))return;const k='ru_'+a;if(!el.dataset[k.replace('-','')]){const v=el.getAttribute(a);if(!I18N[v])return;el.dataset[k.replace('-','')]=v}el.setAttribute(a,L(el.dataset[k.replace('-','')]))}));
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>el.innerHTML=I18H[el.dataset.i18nHtml][LANG]);
+  document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===LANG));
+}
+
 const GROUPS=[
  ['Латиница · заглавные','ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
  ['Латиница · строчные','abcdefghijklmnopqrstuvwxyz'],
@@ -406,7 +423,7 @@ function save(){
     if(g.dirty){g.img=g.has?master(ch).toDataURL('image/png'):null;g.dirty=false}
     if(g.img||g.dx||g.dy||g.dw) out.glyphs[ch]={img:g.img||null,dx:g.dx,dy:g.dy,dw:g.dw};
   }
-  try{localStorage.setItem(KEY,JSON.stringify(out))}catch(e){toast('Браузер не дал сохранить черновик. Сохраните проект в файл .json на вкладке «Превью».')}
+  try{localStorage.setItem(KEY,JSON.stringify(out))}catch(e){toast(L('Браузер не дал сохранить черновик. Сохраните проект в файл .json на вкладке «Превью».'))}
   return out;
 }
 async function loadData(d){
@@ -439,14 +456,14 @@ async function makeExamples(){
 /* ---------- glyph list ---------- */
 const thumbs=new Map();
 function buildList(){
-  const L=$('#list');L.innerHTML='';thumbs.clear();
-  const tb=document.createElement('div');tb.className='gtabs';tb.setAttribute('role','tablist');L.append(tb);
+  const LST=$('#list');LST.innerHTML='';thumbs.clear();
+  const tb=document.createElement('div');tb.className='gtabs';tb.setAttribute('role','tablist');LST.append(tb);
   const names=['Все',...allGroups().map(g=>g[0])];if(!names.includes(gTab))gTab='Все';
-  names.forEach(n=>{const b=document.createElement('button');b.setAttribute('role','tab');b.textContent=n.replace(' · ',' ');b.dataset.g=n;b.onclick=()=>showGroup(n);tb.append(b)});
+  names.forEach(n=>{const b=document.createElement('button');b.setAttribute('role','tab');b.textContent=L(n).replace(' · ',' ');b.dataset.g=n;b.onclick=()=>showGroup(n);tb.append(b)});
   for(const [name,str] of allGroups()){
     const chars=Array.from(str);
     const sec=document.createElement('section');sec.className='group';
-    const h=document.createElement('h3');h.textContent=name;const sp=document.createElement('span');h.append(sp);sec.append(h);
+    const h=document.createElement('h3');h.textContent=L(name);const sp=document.createElement('span');h.append(sp);sec.append(h);
     const cells=document.createElement('div');cells.className='cells';
     for(const ch of chars){
       const b=document.createElement('button');b.className='cell';b.dataset.ch=ch;b.title=ch+'  '+cp(ch);
@@ -454,7 +471,7 @@ function buildList(){
       const l=document.createElement('span');l.textContent=ch;
       b.append(cv,l);b.onclick=()=>select(ch);cells.append(b);thumbs.set(ch,{b,cv});
     }
-    sec.dataset.g=name;sec.append(cells);L.append(sec);sec._count=()=>{sp.textContent=chars.filter(c=>state.glyphs[c]?.has&&!state.glyphs[c].ex).length+'/'+chars.length};
+    sec.dataset.g=name;sec.append(cells);LST.append(sec);sec._count=()=>{sp.textContent=chars.filter(c=>state.glyphs[c]?.has&&!state.glyphs[c].ex).length+'/'+chars.length};
   }
   showGroup(gTab);refreshAll();
 }
@@ -471,7 +488,7 @@ function refreshAll(){
   allChars().forEach(drawThumb);
   document.querySelectorAll('.group').forEach(s=>s._count&&s._count());
   const chars=allChars();const own=chars.filter(c=>state.glyphs[c]?.has&&!state.glyphs[c].ex).length;
-  $('#countTop').textContent=`ваших знаков: ${own} из ${chars.length}`;
+  $('#countTop').textContent=L('ваших знаков: {a} из {b}',{a:own,b:chars.length});
   $('#exBanner').hidden=!Object.values(state.glyphs).some(g=>g.ex&&g.has);
 }
 
@@ -483,7 +500,7 @@ function drawGuides(){
   const y=u=>(TOP-u)*MS;
   const line=(u,col,w,dash)=>{c.beginPath();c.setLineDash(dash||[]);c.strokeStyle=col;c.lineWidth=w;c.moveTo(0,y(u)+.5);c.lineTo(MW,y(u)+.5);c.stroke()};
   c.setLineDash([]);c.font='500 10px "Martian Mono", monospace';c.fillStyle=tok('--rule-strong');c.textAlign='right';
-  [[CAP,'заглавные'],[XH,'строчные'],[0,'база'],[DESC,'выносные']].forEach(([u,t])=>c.fillText(t,MW-8,y(u)-6));c.textAlign='left';
+  [[CAP,'заглавные'],[XH,'строчные'],[0,'база'],[DESC,'выносные']].forEach(([u,t])=>c.fillText(L(t),MW-8,y(u)-6));c.textAlign='left';
   c.strokeStyle=tok('--margin');c.globalAlpha=.55;c.lineWidth=1.5;c.beginPath();c.moveTo(40.5,0);c.lineTo(40.5,MH);c.stroke();c.globalAlpha=1;
 }
 function select(ch){
@@ -497,7 +514,7 @@ function select(ch){
   const sec=thumbs.get(ch)?.b.closest('.group');if(sec&&sec.hidden)showGroup(sec.dataset.g);
   thumbs.get(ch)?.b.scrollIntoView({block:'nearest'});
 }
-function updStatus(){const g=state.glyphs[cur],e=$('#stLbl');e.textContent=!g?.has?'не нарисован':g.ex?'пример':'нарисован';e.style.setProperty('--stc',!g?.has?'var(--line)':g.ex?'var(--muted)':'var(--sel)')}
+function updStatus(){const g=state.glyphs[cur],e=$('#stLbl');e.textContent=L(!g?.has?'не нарисован':g.ex?'пример':'нарисован');e.style.setProperty('--stc',!g?.has?'var(--line)':g.ex?'var(--muted)':'var(--sel)')}
 function updProof(){
   const c=cur;const lower=c.toLowerCase()===c&&c.toUpperCase()!==c;
   $('#proof').textContent=/[А-яЁё]/.test(c)?(lower?`о${c}н${c}о${c}`:`Н${c}Н${c}О${c}`):(lower?`o${c}n${c}o${c}`:`H${c}H${c}O${c}`);
@@ -509,7 +526,7 @@ for(const k in TOOLS)if(!tset.sizes[k])tset.sizes[k]=TOOLS[k][1];
 const tsize=()=>tset.sizes[tset.tool];
 function saveTools(){try{localStorage.setItem('propis-tools',JSON.stringify(tset))}catch(e){}}
 function setTool(t){tset.tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));
-  $('#tName').textContent=TOOLS[t][0];$('#penW').value=tsize();$('#oPen').textContent=tsize();$('#angRow').hidden=t!=='broad';saveTools()}
+  $('#tName').textContent=L(TOOLS[t][0]);$('#penW').value=tsize();$('#oPen').textContent=tsize();$('#angRow').hidden=t!=='broad';saveTools()}
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 $('#penW').addEventListener('input',e=>{tset.sizes[tset.tool]=+e.target.value;$('#oPen').textContent=e.target.value;saveTools()});
 $('#angW').value=tset.angle;$('#oAng').textContent=tset.angle+'°';
@@ -604,7 +621,7 @@ const mcv=$('#mask'),ascCache={};
 const mFont=(s,px)=>`${s[4]} ${s[3]} ${px}px "${s[2]}"`;
 async function drawMask(){
   const c=mcv.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,MW,MH);
-  $('#mtools').toggleAttribute('data-off',!mk.on);$('#maskBtn').classList.toggle('on',mk.on);$('#mState').textContent=mk.on?'вкл':'выкл';
+  $('#mtools').toggleAttribute('data-off',!mk.on);$('#maskBtn').classList.toggle('on',mk.on);$('#mState').textContent=L(mk.on?'вкл':'выкл');
   $('#oOp').textContent=Math.round(mk.op*100)+'%';$('#oSc').textContent=Math.round(mk.sc*100)+'%';$('#oSk').textContent=mk.sk+'°';
   if(!mk.on)return;
   const s=MSTY.find(x=>x[0]===mk.style)||MSTY[0],ch=cur;
@@ -619,10 +636,10 @@ async function drawMask(){
 }
 function saveMk(){try{localStorage.setItem('propis-mask',JSON.stringify(mk))}catch(e){}drawMask()}
 (function initMask(){
-  const sel=$('#maskStyle');MSTY.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=s[1];sel.append(o)});
+  const sel=$('#maskStyle');MSTY.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=L(s[1]);sel.append(o)});
   sel.value=mk.style;$('#maskOp').value=mk.op;$('#maskSc').value=mk.sc;$('#maskSk').value=mk.sk;$('#maskCol').value=mk.col;
   const sw=$('#sws');const mark=()=>sw.querySelectorAll('.sw').forEach(b=>b.classList.toggle('on',b.dataset.c===mk.col));
-  SWC.forEach(c=>{const b=document.createElement('button');b.className='sw';b.style.background=c;b.dataset.c=c;b.setAttribute('aria-label','Цвет маски '+c);
+  SWC.forEach(c=>{const b=document.createElement('button');b.className='sw';b.style.background=c;b.dataset.c=c;b.setAttribute('aria-label',L('Цвет маски')+' '+c);
     b.onclick=()=>{mk.col=c;$('#maskCol').value=c;mark();saveMk()};sw.append(b)});mark();
   $('#maskBtn').onclick=()=>{mk.on=!mk.on;saveMk()};
   const mp=$('#mtools'),mm=$('#maskMore');
@@ -732,7 +749,7 @@ async function rebuild(){
     if(face)document.fonts.delete(face);face=f;
     document.documentElement.style.setProperty('--preview-font',`'${fam}', var(--f-mono)`);
     renderSpec();
-  }catch(e){console.error(e);toast('Не удалось собрать шрифт: '+e.message)}
+  }catch(e){console.error(e);toast(L('Не удалось собрать шрифт: ')+e.message)}
 }
 
 /* ---------- export ---------- */
@@ -749,17 +766,17 @@ let dlP=null;
 function getDL(){if(!dlP)dlP=window.claude?.use?window.claude.use('downloads').catch(()=>null):Promise.resolve(null);return dlP}
 async function offer(filename,data){
   const dl=await getDL();
-  if(!dl){try{const b=data instanceof Blob?data:new Blob([data]),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download=filename;document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('Сохранено: '+filename)}catch(e){toast('Не удалось сохранить файл')}return}
-  try{await dl.save({filename,data});toast('Сохранено: '+filename)}
-  catch(e){toast(e?.code==='declined'?'Сохранение отменено':'Не удалось сохранить: '+(e?.message||e?.code))}
+  if(!dl){try{const b=data instanceof Blob?data:new Blob([data]),u=URL.createObjectURL(b),l=document.createElement('a');l.href=u;l.download=filename;document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast(L('Сохранено: ')+filename)}catch(e){toast(L('Не удалось сохранить файл'))}return}
+  try{await dl.save({filename,data});toast(L('Сохранено: ')+filename)}
+  catch(e){toast(e?.code==='declined'?L('Сохранение отменено'):L('Не удалось сохранить: ')+(e?.message||e?.code))}
 }
 async function exportFont(){
   const own=Object.values(state.glyphs).filter(g=>g.has&&!g.ex).length;
   const {font,n}=buildFont();const buf=font.toArrayBuffer();const base=psName().replace('-Regular','');
   const z=new JSZip();z.file(base+'.otf',buf);z.file(base+'.woff',toWoff(buf));
   const pj=save();pj.format='propis';pj.version=1;z.file('project.json',JSON.stringify(pj));
-  z.file('ПРОЧТИ.txt',`Шрифт «${state.name}», знаков: ${n}.\n\n${base}.otf — установите в систему (двойной клик → Установить). Работает в Figma, Illustrator, Word и др.\n${base}.woff — для сайтов:\n@font-face{font-family:"${state.name}";src:url(${base}.woff) format("woff")}\n\nproject.json — проект «Прописи»: откройте этот же архив кнопкой «Открыть», чтобы продолжить работу.\n\nСделано в «Пропись».`);
-  if(own===0)toast('В шрифте пока только примеры — нарисуйте свои буквы');
+  z.file(LANG==='ru'?'ПРОЧТИ.txt':LANG==='cs'?'PRECTI.txt':'README.txt',(LANG==='ru'?RU_README:I18N.README[LANG]).split('{name}').join(state.name).split('{n}').join(n).split('{base}').join(base));
+  if(own===0)toast(L('В шрифте пока только примеры — нарисуйте свои буквы'));
   await offer(base+'.zip',await z.generateAsync({type:'blob'}));
 }
 $('#exportBtn').onclick=exportFont;
@@ -779,37 +796,38 @@ async function importFontBuf(buf,label){
 async function openAny(f){
   try{
     const nm=f.name.toLowerCase();
-    if(nm.endsWith('.json')){await loadData(JSON.parse(await f.text()));return afterLoad('Проект открыт')}
+    if(nm.endsWith('.json')){await loadData(JSON.parse(await f.text()));return afterLoad(L('Проект открыт'))}
     if(/\.(otf|ttf|woff)$/.test(nm)){for(const g of Object.values(state.glyphs))if(g.ex){g.ex=false;g.has=false}
-      const n=await importFontBuf(await f.arrayBuffer());return afterLoad('Из шрифта загружено знаков: '+n)}
+      const n=await importFontBuf(await f.arrayBuffer());return afterLoad(L('Из шрифта загружено знаков: ')+n)}
     const z=await JSZip.loadAsync(f);
     const pj=Object.values(z.files).find(x=>!x.dir&&/(^|\/)project\.json$/i.test(x.name))||Object.values(z.files).find(x=>!x.dir&&/\.json$/i.test(x.name));
-    if(pj){await loadData(JSON.parse(await pj.async('string')));return afterLoad('Архив открыт: проект восстановлен')}
+    if(pj){await loadData(JSON.parse(await pj.async('string')));return afterLoad(L('Архив открыт: проект восстановлен'))}
     const ff=Object.values(z.files).find(x=>!x.dir&&/\.(otf|ttf)$/i.test(x.name))||Object.values(z.files).find(x=>!x.dir&&/\.woff$/i.test(x.name));
     if(ff){for(const g of Object.values(state.glyphs))if(g.ex){g.ex=false;g.has=false}
-      const n=await importFontBuf(await ff.async('arraybuffer'));return afterLoad('Из шрифта в архиве загружено знаков: '+n)}
-    toast('В архиве нет ни проекта, ни шрифта');
-  }catch(err){console.error(err);toast('Не получилось открыть файл: '+(err.message||err))}
+      const n=await importFontBuf(await ff.async('arraybuffer'));return afterLoad(L('Из шрифта в архиве загружено знаков: ')+n)}
+    toast(L('В архиве нет ни проекта, ни шрифта'));
+  }catch(err){console.error(err);toast(L('Не получилось открыть файл: ')+(err.message||err))}
 }$('#exportBtn2').onclick=exportFont;
 $('#saveProj').onclick=()=>{const d=save();d.format='propis';d.version=1;offer((psName().replace('-Regular',''))+'-project.json',JSON.stringify(d))};
 $('#openProjBtn').onclick=()=>$('#openProj').click();
 $('#openProj').onchange=async e=>{const f=e.target.files[0];if(!f)return;
-  try{const d=JSON.parse(await f.text());await loadData(d);syncSettingsUI();$('#fname').value=state.name;buildList();select('A');save();rebuild();toast('Проект открыт')}
-  catch(err){toast('Это не файл проекта «Пропись»')} e.target.value=''};
+  try{const d=JSON.parse(await f.text());await loadData(d);syncSettingsUI();$('#fname').value=state.name;buildList();select('A');save();rebuild();toast(L('Проект открыт'))}
+  catch(err){toast(L('Это не файл проекта «Пропись»'))} e.target.value=''};
 
 /* ---------- preview tab ---------- */
 const SETS=[['#sLsb','lsb','#oLsb'],['#sTrack','track','#oTrack'],['#sSpace','space','#oSpace'],['#sWeight','weight','#oWeight'],['#sSmooth','smooth','#oSmooth']];
 function syncSettingsUI(){SETS.forEach(([i,k,o])=>{$(i).value=state.settings[k];$(o).textContent=state.settings[k]})}
 SETS.forEach(([i,k,o])=>$(i).addEventListener('input',e=>{state.settings[k]=+e.target.value;$(o).textContent=e.target.value;saveSoon();rebuildSoon();drawOutline()}));
 $('#sSize').addEventListener('input',e=>{$('#oSize').textContent=e.target.value;$('#pview').style.fontSize=e.target.value+'px'});$('#oSize').textContent=48;
-const PT='Съешь же ещё этих мягких французских булок, да выпей чаю.\nPříliš žluťoučký kůň úpěl ďábelské ódy.\nThe quick brown fox jumps over the lazy dog — 0123456789?!';
+const PT_RU='Съешь же ещё этих мягких французских булок, да выпей чаю.\nPříliš žluťoučký kůň úpěl ďábelské ódy.\nThe quick brown fox jumps over the lazy dog — 0123456789?!';
+const ptFor=l=>l==='ru'?PT_RU:I18N.PT[l];let PT=ptFor(LANG);
 $('#ptext').value=PT;$('#pview').textContent=PT;
 $('#ptext').addEventListener('input',e=>$('#pview').textContent=e.target.value);
 function renderSpec(){const s=$('#spec');s.innerHTML='';for(const ch of allChars()){const d=document.createElement('div');d.textContent=ch;const g=state.glyphs[ch];if(!g?.has)d.className='miss';d.title=cp(ch);s.append(d)}}
 $('#addBtn').onclick=()=>{
   const have=new Set(allChars());const add=Array.from($('#addIn').value).filter(c=>c.trim()&&!have.has(c));
-  if(!add.length){toast('Эти знаки уже есть в списке');return}
-  state.custom.push(...new Set(add));$('#addIn').value='';buildList();save();rebuild();fillPages();toast('Добавлено знаков: '+add.length);
+  if(!add.length){toast(L('Эти знаки уже есть в списке'));return}
+  state.custom.push(...new Set(add));$('#addIn').value='';buildList();save();rebuild();fillPages();toast(L('Добавлено знаков: ')+add.length);
 };
 $('#fname').addEventListener('input',e=>{state.name=e.target.value;saveSoon();rebuildSoon()});
 $('#clearEx').onclick=()=>{for(const [ch,g] of Object.entries(state.glyphs))if(g.ex){g.ex=false;g.has=false;g.v++;master(ch).getContext('2d').clearRect(0,0,MW,MH)}
@@ -831,13 +849,13 @@ const PER=T.cols*T.rows;
 const pages=()=>Math.ceil(allChars().length/PER);
 function box(i){const c=i%T.cols,r=(i/T.cols)|0,cx=T.gx+c*T.cw,cy=T.gy+r*T.chh;return{cx,cy,bx:cx+14,by:cy+40,bw:190,bh:190*FH/FW}}
 function fillPages(){for(const id of ['#tplPage','#scanPage']){const s=$(id),v=s.value;s.innerHTML='';for(let i=0;i<pages();i++){const o=document.createElement('option');o.value=i;
-  const ch=allChars().slice(i*PER,i*PER+PER);o.textContent=`${i+1} из ${pages()} (${ch[0]}…${ch[ch.length-1]})`;s.append(o)}if(v&&+v<pages())s.value=v}}
+  const ch=allChars().slice(i*PER,i*PER+PER);o.textContent=L('{i} из {n} ({a}…{b})',{i:i+1,n:pages(),a:ch[0],b:ch[ch.length-1]});s.append(o)}if(v&&+v<pages())s.value=v}}
 function renderTemplate(cv,p){
   const c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,T.W,T.H);c.fillStyle='#000';
   T.M.forEach(([x,y])=>c.fillRect(x-T.ms/2,y-T.ms/2,T.ms,T.ms));
   c.fillStyle='#1b2240';c.font='800 40px Geologica, Onest, sans-serif';c.fillText('Пропись',200,165);
-  c.font='500 26px Onest, sans-serif';c.fillStyle='#55607f';c.fillText(`«${state.name}» · лист ${p+1} из ${pages()}`,200,205);
-  c.font='400 21px Onest, sans-serif';c.fillText('Пишите знак внутри рамки тёмной ручкой. Голубые линии: заглавные, строчные (пунктир), базовая, выносные.',200,255);
+  c.font='500 26px Onest, sans-serif';c.fillStyle='#55607f';c.fillText(L('«{name}» · лист {i} из {n}',{name:state.name,i:p+1,n:pages()}),200,205);
+  c.font='400 21px Onest, sans-serif';c.fillText(L('Пишите знак внутри рамки тёмной ручкой. Голубые линии: заглавные, строчные (пунктир), базовая, выносные.'),200,255);
   const chars=allChars().slice(p*PER,p*PER+PER);
   chars.forEach((ch,i)=>{const b=box(i);
     c.fillStyle='#1b2240';c.font='600 26px Onest, sans-serif';c.fillText(ch,b.bx,b.cy+30);
@@ -858,21 +876,21 @@ $('#tplAll').onclick=async()=>{const z=new JSZip();for(let p=0;p<pages();p++){co
 const scan={cv:document.createElement('canvas'),pts:null,mx:null,W:0,H:0};
 const sv=$('#scanView');
 async function loadScan(file){
-  let bmp;try{bmp=await createImageBitmap(file,{imageOrientation:'from-image'})}catch(e){toast('Не получилось открыть изображение');return}
+  let bmp;try{bmp=await createImageBitmap(file,{imageOrientation:'from-image'})}catch(e){toast(L('Не получилось открыть изображение'));return}
   const k=Math.min(1,2200/Math.max(bmp.width,bmp.height));scan.W=R(bmp.width*k);scan.H=R(bmp.height*k);
   scan.cv.width=scan.W;scan.cv.height=scan.H;const c=scan.cv.getContext('2d',{willReadFrequently:true});c.drawImage(bmp,0,0,scan.W,scan.H);
   const d=c.getImageData(0,0,scan.W,scan.H).data;scan.mx=new Uint8Array(scan.W*scan.H);
   for(let i=0;i<scan.mx.length;i++)scan.mx[i]=Math.max(d[i*4],d[i*4+1],d[i*4+2]);
   scan.pts=detect();sv.width=scan.W;sv.height=scan.H;$('#scanBox').hidden=false;drawScan();
-  $('#scanStatus').textContent=scan.found?'Угловые метки найдены. Проверьте, что рамки легли на буквы.':'Метки не найдены автоматически: перетащите четыре красные точки на центры чёрных квадратов.';
+  $('#scanStatus').textContent=L(scan.found?'Угловые метки найдены. Проверьте, что рамки легли на буквы.':'Метки не найдены автоматически: перетащите четыре красные точки на центры чёрных квадратов.');
 }
 function detect(){
   const dw=700,s=dw/scan.W,dh=R(scan.H*s),c=document.createElement('canvas');c.width=dw;c.height=dh;const x=c.getContext('2d');x.drawImage(scan.cv,0,0,dw,dh);
   const d=x.getImageData(0,0,dw,dh).data,N=dw*dh,b=new Uint8Array(N);for(let i=0;i<N;i++)b[i]=(d[i*4]+d[i*4+1]+d[i*4+2])/3<100?1:0;
-  const lab=new Int32Array(N),cand=[];let L=0;const st=[];
-  for(let i=0;i<N;i++)if(b[i]&&!lab[i]){L++;lab[i]=L;st.push(i);let n=0,x0=1e9,x1=-1,y0=1e9,y1=-1;
+  const lab=new Int32Array(N),cand=[];let LB=0;const st=[];
+  for(let i=0;i<N;i++)if(b[i]&&!lab[i]){LB++;lab[i]=LB;st.push(i);let n=0,x0=1e9,x1=-1,y0=1e9,y1=-1;
     while(st.length){const j=st.pop();n++;const px=j%dw,py=(j/dw)|0;if(px<x0)x0=px;if(px>x1)x1=px;if(py<y0)y0=py;if(py>y1)y1=py;
-      for(const q of [px>0?j-1:-1,px<dw-1?j+1:-1,py>0?j-dw:-1,py<dh-1?j+dw:-1])if(q>=0&&b[q]&&!lab[q]){lab[q]=L;st.push(q)}}
+      for(const q of [px>0?j-1:-1,px<dw-1?j+1:-1,py>0?j-dw:-1,py<dh-1?j+dw:-1])if(q>=0&&b[q]&&!lab[q]){lab[q]=LB;st.push(q)}}
     const w=x1-x0+1,h=y1-y0+1;if(w>dw*.012&&w<dw*.12&&h/w>.7&&h/w<1.4&&n/(w*h)>.72)cand.push([(x0+x1)/2/s,(y0+y1)/2/s])}
   const cor=[[0,0],[scan.W,0],[scan.W,scan.H],[0,scan.H]],used=new Set(),res=[];
   if(cand.length>=4){for(const k of cor){let bi=-1,bd=1e18;cand.forEach((p,i)=>{if(used.has(i))return;const dd=(p[0]-k[0])**2+(p[1]-k[1])**2;if(dd<bd){bd=dd;bi=i}});used.add(bi);res.push(cand[bi].slice())}
@@ -923,7 +941,7 @@ $('#scanGo').onclick=()=>{
     g.has=true;g.ex=false;g.v++;g.dirty=true;added++;
   });
   refreshAll();select(cur);saveSoon();rebuild();
-  $('#scanStatus').textContent=`Готово: добавлено ${added}, пустых рамок ${empty}${kept?`, пропущено уже нарисованных ${kept}`:''}. Проверьте буквы на вкладке «Рисовать» и при необходимости подправьте.`;
+  $('#scanStatus').textContent=L('Готово: добавлено {a}, пустых рамок {b}{c}. Проверьте буквы на вкладке «Рисовать» и при необходимости подправьте.',{a:added,b:empty,c:kept?L(', пропущено уже нарисованных {k}',{k:kept}):''});
 };
 
 /* ---------- theme ---------- */
@@ -941,7 +959,7 @@ function linkNums(){
     const lab=r.closest('label');if(!lab||lab.querySelector('input.num'))return;
     const out=lab.querySelector('output');
     const pct=+r.max<=1.5&&+r.step<1;
-    const n=document.createElement('input');n.type='number';n.className='num';n.setAttribute('aria-label',(lab.textContent||'').trim()+' — число');
+    const n=document.createElement('input');n.type='number';n.className='num';n.setAttribute('aria-label',(lab.textContent||'').trim()+' '+L('— число'));
     n.min=pct?Math.round(r.min*100):r.min;n.max=pct?Math.round(r.max*100):r.max;n.step=pct?Math.max(1,Math.round(r.step*100)):(r.step||1);
     const show=()=>{n.value=pct?Math.round(r.value*100):r.value};
     const apply=()=>{if(n.value==='')return;let v=+n.value;v=Math.max(+n.min,Math.min(+n.max,v));r.value=pct?v/100:v;r.dispatchEvent(new Event('input',{bubbles:true}))};
@@ -955,10 +973,26 @@ function linkNums(){
   });
 }
 
+/* ---------- language ---------- */
+const NAME_DEF=['Мой почерк','Můj rukopis','My handwriting'];
+function setLang(l){
+  const oldPT=ptFor(LANG);LANG=l;try{localStorage.setItem('propis-lang',l)}catch(e){}
+  i18nStatic();
+  if(NAME_DEF.includes(state.name)){state.name=L('Мой почерк');$('#fname').value=state.name;saveSoon()}
+  const pt=$('#ptext');PT=ptFor(l);if(pt.value===oldPT){pt.value=PT;$('#pview').textContent=PT}
+  const ms=$('#maskStyle');[...ms.options].forEach((o,i)=>o.textContent=L(MSTY[i][1]));
+  buildList();setTool(tset.tool);updStatus();drawMask();drawGuides();fillPages();
+  if(!$('#tab-scan').hidden)renderTemplate($('#tplCv'),+$('#tplPage').value);
+  if($('#scanStatus').textContent)$('#scanStatus').textContent='';
+  moveInd();
+}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+
 /* ---------- init ---------- */
 (async()=>{
   let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-  if(saved)await loadData(saved);
+  if(saved)await loadData(saved);else state.name=L('Мой почерк');
+  i18nStatic();
   $('#fname').value=state.name;syncSettingsUI();
   if(!Object.values(state.glyphs).some(g=>g.has))await makeExamples();
   drawGuides();buildList();fillPages();select('A');setTool(tset.tool);rebuild();moveInd();linkNums();

@@ -12,6 +12,7 @@ Browser app that turns handwriting and drawn symbols into an OTF/WOFF font — L
 - Printable A4 template + photo/scan recognition with automatic corner detection
 - Vectorization, spacing and per-glyph adjustments with live preview
 - Export a ZIP with `.otf`, `.woff` and the project file; open a project, a ZIP or any `.otf/.ttf/.woff` to keep working
+- Interface in English, Czech and Russian; opens in your browser's language
 - Everything runs locally in the browser, nothing is uploaded
 
 ## Run locally
@@ -36,6 +37,7 @@ Libraries (CDN): [opentype.js](https://github.com/opentypejs/opentype.js), [JSZi
 - Шаблон A4 для печати и распознавание фото/скана с автоматическим поиском углов
 - Векторизация, интервалы и настройка каждого знака с живым превью
 - Сохранение ZIP с `.otf`, `.woff` и файлом проекта; открытие проекта, ZIP или любого шрифта `.otf/.ttf/.woff`
+- Интерфейс на английском, чешском и русском; открывается на языке браузера
 - Всё работает в браузере, файлы никуда не отправляются
 
 ## Запуск
